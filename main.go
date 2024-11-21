@@ -71,22 +71,62 @@ func main() {
 
 	for _, league := range leagueStorage {
 		for i := 1; i <= 18; i++ {
-			transaction, err := client.GetTransactionsForWeek(league.LeagueID, i)
+			transactions, err := client.GetTransactionsForWeek(league.LeagueID, i)
 			if err != nil {
 				log.Fatalf("Error getting transactions for %s in week %d: %v", league.Name, i, err)
 			}
-			for _, t := range transaction {
-				if len(t.Adds) > 0 && t.Type == "trade" {
+			for _, t := range transactions {
+				if len(t.Adds) > 0 {
 					for k := range t.Adds {
 						var roster = rosterStorage[t.Adds[k]]
 						var userID = roster.OwnerID
 						if err != nil {
 							log.Fatalf("Error getting user with ID %s: %v", userID, err)
 						}
-						fmt.Printf("%s week %d %s %s acquired by %s\n", league.Season, t.Leg, playerStorage[k].FirstName, playerStorage[k].LastName, userStorage[userID].DisplayName)
+						// fmt.Printf("%s week %d %s %s acquired by %s\n", league.Season, t.Leg, playerStorage[k].FirstName, playerStorage[k].LastName, userStorage[userID].DisplayName)
+						playerStorage[k].Transactions[t.TransactionID] = t
 					}
 				}
 			}
 		}
+	}
+
+	var mostTradedPlayers = make(map[*models.Player]int)
+	var mostTradedCount = 0
+	var mostTransactedPlayers = make(map[*models.Player]int)
+	var mostTransactedCount = 0
+	for _, player := range playerStorage {
+		if len(player.Transactions) > mostTransactedCount{
+			fmt.Printf("%s %s was involved in %d transactions, higher than current max of %d\n", player.FirstName, player.LastName, len(player.Transactions), mostTransactedCount)
+			mostTransactedCount = len(player.Transactions)
+			mostTransactedPlayers =  make(map[*models.Player]int)
+			mostTransactedPlayers[player] = len(player.Transactions)
+		} else if len(player.Transactions) == mostTransactedCount {
+			fmt.Printf("%s %s was involved in %d transactions, matching the current max of %d\n", player.FirstName, player.LastName, len(player.Transactions), mostTransactedCount)
+			mostTransactedPlayers[player] = len(player.Transactions)
+		}
+		var tradeCount = 0
+		for _, t := range player.Transactions {
+			if t.Type == "trade" {
+				tradeCount++
+			}
+		}
+		if tradeCount > mostTradedCount {
+			fmt.Printf("%s %s was involved in %d trades, higher than current max of %d\n", player.FirstName, player.LastName, tradeCount, mostTradedCount)
+			mostTradedCount = tradeCount
+			mostTradedPlayers =  make(map[*models.Player]int)
+			mostTradedPlayers[player] = tradeCount
+		} else if tradeCount == mostTradedCount {
+			fmt.Printf("%s %s was involved in %d trades, matching the current max of %d\n", player.FirstName, player.LastName, tradeCount, mostTradedCount)
+			mostTradedPlayers[player] = tradeCount
+		}
+	}
+	fmt.Printf("\nThe highest number of trades for a single player is %d\nThe following players have been traded %d times.\n", mostTradedCount, mostTradedCount)
+	for k := range mostTradedPlayers{
+		fmt.Printf("%s %s\n", k.FirstName, k.LastName)
+	}
+	fmt.Printf("\nThe highest number of moves for a single player is %d\nThe following players have been moved %d times.\n", mostTransactedCount, mostTransactedCount)
+	for k := range mostTransactedPlayers{
+		fmt.Printf("%s %s\n", k.FirstName, k.LastName)
 	}
 }

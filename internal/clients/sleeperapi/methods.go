@@ -69,6 +69,11 @@ func (c *SleeperClient) GetPlayers() (map[string]models.Player, error) {
 	if err := ParseResponse(resp, &players); err != nil {
 		return nil, err
 	}
+	for k := range players {
+		player := players[k]
+		player.Transactions = make(map[string]models.Transaction)
+		players[k] = player
+	}
 
 	return players, nil
 }

@@ -33,5 +33,5 @@ type Player struct {
 	RotoworldID        int      `json:"rotoworld_id"`         // Rotoworld ID
 	SearchFirstName    string   `json:"search_first_name"`    // First name for search
 	YahooID            *int  `json:"yahoo_id"`             // Nullable Yahoo ID
-	Transactions 	[]Transaction
+	Transactions 		map[string]Transaction
 }
