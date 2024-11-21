@@ -87,6 +87,7 @@ func (c *SleeperClient) GetUser(userID string) (*models.User, error) {
 	if err := ParseResponse(resp, &user); err != nil {
 		return nil, err
 	}
+	user.Transactions = make([]models.Transaction, 0)
 
 	return &user, nil
 }
