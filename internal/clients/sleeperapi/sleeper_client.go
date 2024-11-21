@@ -1,9 +1,9 @@
 package sleeperapi
 
 import (
-    "bytes"
-    "encoding/json"
-    "net/http"
+	"bytes"
+	"encoding/json"
+	"net/http"
 )
 
 type SleeperClient struct {
@@ -20,7 +20,6 @@ func NewClient(baseURL string) *SleeperClient {
 
 func (c *SleeperClient) MakeRequest(endpoint string, method string, payload interface{}) (*http.Response, error) {
     url := c.BaseURL + endpoint
-
     var body []byte
     var err error
     if payload != nil {

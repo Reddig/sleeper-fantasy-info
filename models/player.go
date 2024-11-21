@@ -3,7 +3,7 @@ package models
 type Player struct {
 	PlayerID            string   `json:"player_id"`            // Unique player ID
 	Hashtag             string   `json:"hashtag"`              // Hashtag identifier
-	DepthChartPosition  int      `json:"depth_chart_position"` // Depth chart position
+	DepthChartPosition  *string      `json:"depth_chart_position"` // Depth chart position
 	Status             string   `json:"status"`               // Player status (Active, Inactive, etc.)
 	Sport              string   `json:"sport"`                // Sport type (e.g., NFL)
 	FantasyPositions   []string `json:"fantasy_positions"`    // List of fantasy positions (e.g., ["QB"])
@@ -22,15 +22,15 @@ type Player struct {
 	Height             string   `json:"height"`               // Height (e.g., "6'4\"")
 	SearchFullName     string   `json:"search_full_name"`     // Full name for search
 	Age                int      `json:"age"`                  // Age of the player
-	StatsID            string   `json:"stats_id"`             // Stats ID (if applicable)
+	StatsID            int   `json:"stats_id"`             // Stats ID (if applicable)
 	BirthCountry       string   `json:"birth_country"`        // Country of birth
-	ESPNID             string   `json:"espn_id"`              // ESPN ID
+	ESPNID             int   `json:"espn_id"`              // ESPN ID
 	SearchRank         int      `json:"search_rank"`          // Search rank
 	FirstName          string   `json:"first_name"`           // First name
 	DepthChartOrder    int      `json:"depth_chart_order"`    // Order in the depth chart
 	YearsExperience    int      `json:"years_exp"`            // Years of experience
-	RotowireID         *string  `json:"rotowire_id"`          // Nullable Rotowire ID
+	RotowireID         *int  `json:"rotowire_id"`          // Nullable Rotowire ID
 	RotoworldID        int      `json:"rotoworld_id"`         // Rotoworld ID
 	SearchFirstName    string   `json:"search_first_name"`    // First name for search
-	YahooID            *string  `json:"yahoo_id"`             // Nullable Yahoo ID
+	YahooID            *int  `json:"yahoo_id"`             // Nullable Yahoo ID
 }
