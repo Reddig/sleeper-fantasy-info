@@ -61,7 +61,7 @@ func (c *SleeperClient) GetTransactionsForWeek(leagueID string, week int) ([]mod
 }
 
 func (c *SleeperClient) GetPlayers() (map[string]models.Player, error) {
-	resp, err := Get(c, fmt.Sprintf("/players/nfl"))
+	resp, err := Get(c, "/players/nfl")
 	if err != nil {
 		return nil, err
 	} 
@@ -71,4 +71,31 @@ func (c *SleeperClient) GetPlayers() (map[string]models.Player, error) {
 	}
 
 	return players, nil
+}
+
+func (c *SleeperClient) GetUser(userID string) (*models.User, error) {
+	resp, err := Get(c, fmt.Sprintf("/user/%s", userID))
+	if err != nil {
+		return nil, err
+	} 
+	var user models.User
+	if err := ParseResponse(resp, &user); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+
+func (c *SleeperClient) GetRosters(league string) ([]models.Roster, error) {
+	resp, err := Get(c, fmt.Sprintf("league/%s/rosters", league))
+	if err != nil {
+		return nil, err
+	} 
+	var rosters []models.Roster
+	if err := ParseResponse(resp, &rosters); err != nil {
+		return nil, err
+	}
+
+	return rosters, nil
 }
